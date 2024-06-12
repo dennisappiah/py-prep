@@ -1,5 +1,5 @@
 class TagContainer:
-    def __init__(self, tags: object = None) -> object:
+    def __init__(self, tags=None):
         if tags is None:
             self.tags = {}
         else:

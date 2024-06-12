@@ -1,5 +1,7 @@
 """ Each enemy has 10 health points and 1 attack_damage, but what we don't know the type of enemy"""
 
+# What kind of state data do you want to track
+
 
 class Enemy:
     def __init__(self, type_of_enemy, health_points=10, attack_damage=1):
@@ -19,6 +21,9 @@ class Enemy:
 
     def attack(self):
         print(f"{self.__type_of_enemy} attacks for {self.attack_damage} damage")
+
+    def special_attack(self):
+        print("special attack")
 
 
 enemy = Enemy("Zombie")

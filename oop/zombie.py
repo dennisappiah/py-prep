@@ -1,4 +1,5 @@
 from enemy import Enemy
+import random
 
 
 # zombie is-a Enemy
@@ -16,6 +17,11 @@ class Zombie(Enemy):
 
     def spread_disease(self):
         print("The zombie is trying to spread disease")
+
+    def special_attack(self):
+        did_special_attack_work = random.random() < 0.50
+        if did_special_attack_work:
+            self.health_points += 2
 
 
 zombie = Zombie(100, 10)
