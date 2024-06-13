@@ -1,0 +1,4 @@
+# read and write files -> open module
+# Manipulates path -> os.path
+# read all the lines in all the files on the command line -> fileinput module
+#  For creating temporary files and directories -> tempfile
