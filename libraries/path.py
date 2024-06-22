@@ -2,7 +2,7 @@
 The os module represents paths as strings with which you cannot do much.
 The pathlib module represents paths as special objects with useful methods and attributes.
 """
-import os
+
 from pathlib import Path
 
 # prints current working directory path (C:\Users\denni\Videos\playingwithfiles)

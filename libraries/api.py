@@ -1,34 +1,57 @@
-import json
-
 import requests
+import json
+import os
+from requests import RequestException
 
-url = "https://jsonplaceholder.typicode.com/comments"
-query_strings = {"postId": 1}
-headers = {"Authorization": "Bearer " + "xxxxx"}
 
-response = requests.get(url=url, params=query_strings, headers=headers)
-response_text = response.text
+def create_gist():
+    url = "https://api.github.com/gists"
+    headers = {
+        "Accept": "application/json",
+        "Authorization": f"token {os.getenv('TOKEN')}",
+    }
 
-# converting to python object (list of dictionary object) - unMarshalling
-comment_dictionary_list = json.loads(response_text)
+    gist = {
+        "files": {"main.go": {"content": "test"}},
+        "description": "this is a test",
+        "public": False,
+    }
 
-for comment in comment_dictionary_list:
-    print(str(comment["postId"]) + " " + comment["name"])
+    gist_json = json.dumps(gist)
 
-# POST Request
-new_post = {
-    "postId": 30,
-    "it": 7,
-    "name": "repels the consequences of present or lesser pleasures",
-    "email": "Dallas@ole.me",
-    "body": "blahblah",
-}
+    try:
+        response = requests.post(url, headers=headers, data=gist_json, timeout=1)
+        response.raise_for_status()  # raise an exception for HTTP errors
+    except RequestException as err:
+        print(f"Error making request: {err}")
+        return
 
-# converting dict object into json
-payload = json.dumps(new_post)
+    try:
+        body = response.json()
+    except Exception as err:
+        print(f"Error reading response body: {err}")
+        return
 
-res = requests.post(url=url, data=payload, headers=headers)
+    print(f"Body: {json.dumps(body, indent=2)}")
+    print(f"Response status: {response.status_code}")
 
-if res.status_code == requests.codes.created:
-    print(f"{res.status_code} - resource creation is successful")
-    print(res.text)
+
+def get_comments():
+    url = "https://jsonplaceholder.typicode.com/comments"
+    query_strings = {"postId": 1}
+    headers = {
+        "Authorization": f"bearer {os.getenv('TOKEN')}",
+    }
+
+    response = requests.get(url=url, params=query_strings, headers=headers)
+
+    # converting to python object (list of dictionary object) - unMarshalling
+    comment_dictionary_list = json.loads(response.text)
+
+    for comment in comment_dictionary_list:
+        print(str(comment["postId"]) + " " + comment["name"])
+
+
+if __name__ == "__main__":
+    create_gist()
+    get_comments()
